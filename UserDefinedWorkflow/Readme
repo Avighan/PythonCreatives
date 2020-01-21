@@ -1,1 +1,6 @@
 
+This is a user defined process flow management code. You can write our functions and then with the help of the creator and executor arrange it 
+sequentially. It also helps to pull out intermediate step results.
+
+Currently not optimized for large datasets or parallel computation (work in progress)
+only input from one step can be added to next step, working to add multiple steps input to next step.
