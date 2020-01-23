@@ -1,5 +1,6 @@
 import pandas as pd
 import ML_Template_Run as mltr
+import sys
 
 #Preparing the Functions
 filename='sample_data.xlsx'
@@ -12,14 +13,20 @@ def show_header(df,n=10):
 
 
 
+
 #Defining the flow
 test1 = mltr.UDF_Flow_Creator()
-func1 = test1.create_function_node(load_data,{'file':filename})
-func2 = test1.create_function_node(show_header,{'parent':'df','n':10})
-test1.create_connections(load_data,show_header)
-test_exe = mltr.UDF_Flow_executor(test1.get_flow_dict())
-executed_flow = test_exe.execute_flow()
+n1 = test1.create_function_node('load',load_data,{'file':filename})
+n2 = test1.create_function_node('head',show_header,{'n':10})
 
+cn1 = test1.create_connections(n1.functionName,n2.functionName,input_output_params={'df': n1.functionName})
+test_exe = mltr.UDF_Flow_executor(test1.get_flow_dict())
+
+
+print(test_exe.run_nodes(n1))
+sys.exit()
+
+executed_flow = test_exe.execute_flow()
 #Extrating data from step
-print(test_exe.get_step_results(show_header))
+print(test_exe.get_step_results(cn1.functionName))
 
