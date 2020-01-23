@@ -143,10 +143,18 @@ class UDF_Flow_executor:
 
 
     def run_nodes(self,node,add_to_step=False):
-        function = node.function
-        param  = node.functionParameters
-        output = function(**param)
-        return output
+        if add_to_step == False:
+            function = node.function
+            param  = node.functionParameters
+            output = function(**param)
+            return output
+        else:
+            function = node.function
+            param = node.functionParameters
+            output = function(**param)
+            self.step_result[node.functionName] = output
+
+
 
     def get_step_results(self,step_function=None):
         if step_function is not None:
