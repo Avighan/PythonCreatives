@@ -91,8 +91,17 @@ class MLmodels:
             self.__train_val_split__()
         return self.model.fit(self.train_x, self.train_y, **kwargs)
 
-    def model_predict(self):
-        return self.model.predict(self.test_x)
+    def model_predict(self,X=None):
+        if X is None:
+            return self.model.predict(self.test_x)
+        else:
+            return self.model.predict(X)
+
+    def model_predict_proba(self,X=None):
+        if X is None:
+            return self.model.predict_proba(self.test_x)
+        else:
+            return self.model.predict_proba(X)
 
     def hyperParameterTuning(self, params, cv, n_jobs=-1, model=None):
         if self.train_x is None or self.test_x is None or self.train_y is None or self.test_y is None:
