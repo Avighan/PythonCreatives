@@ -16,14 +16,20 @@ from sklearn.svm import SVC,SVR
 from sklearn.linear_model import LinearRegression, Ridge, BayesianRidge
 from xgboost import XGBRegressor
 from xgboost import XGBClassifier
-
+import pdb
 
 class MLmodels:
-    def __init__(self, df=None, y_column=None):
+    def __init__(self, df=None, y_column=None,hyperparam=False):
+        self.train_x = None
+        self.test_x = None
+        self.train_y = None
+        self.test_y = None
         if df is not None and y_column is not None:
             self.dataset = df
             self.y = df[[y_column]]
             self.x = df[[col for col in df.columns if col != y_column]]
+
+        self.hyperparam = hyperparam
 
     def __train_val_split__(self, **kwargs):
         self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(self.x, self.y, **kwargs)
@@ -81,13 +87,18 @@ class MLmodels:
             self.test_x = test_x
         if test_y is not None:
             self.train_y = train_y
+        if self.train_x is None or self.test_x is None or self.train_y is None or self.test_y is None:
+            self.__train_val_split__()
         return self.model.fit(self.train_x, self.train_y, **kwargs)
 
     def model_predict(self):
         return self.model.predict(self.test_x)
 
     def hyperParameterTuning(self, params, cv, n_jobs=-1, model=None):
+        if self.train_x is None or self.test_x is None or self.train_y is None or self.test_y is None:
+            self.__train_val_split__()
         from sklearn.model_selection import GridSearchCV
+        pdb.set_trace()
         if model is None:
             grid_search = GridSearchCV(self.model, param_grid=params, cv=cv, verbose=1, n_jobs=n_jobs)
         else:
@@ -95,3 +106,17 @@ class MLmodels:
         modelsearch = grid_search.fit(self.train_x, self.train_y)
         self.params = grid_search.best_params_
         return self.params
+
+    def compile_modeling(self):
+        if self.hyperparam == False:
+            if self.train_x is None or self.test_x is None or self.train_y is None or self.test_y is None:
+                self.__train_val_split__()
+            model = self.model_fit()
+        else:
+            if self.train_x is None or self.test_x is None or self.train_y is None or self.test_y is None:
+                self.__train_val_split__()
+
+            params = self.hyperParameterTuning(params=self.hyperparam,cv=10,n_jobs=-1)
+            self.model = self.set_model_parameters(params)
+            model = self.model_fit()
+        return model

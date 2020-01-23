@@ -2,6 +2,26 @@ import pdb
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder, MaxAbsScaler, MinMaxScaler, OneHotEncoder, StandardScaler, RobustScaler, Binarizer, FunctionTransformer, Normalizer, OrdinalEncoder, PowerTransformer, QuantileTransformer, LabelBinarizer, MultiLabelBinarizer
+from sklearn.ensemble import IsolationForest
+from sklearn.covariance import EllipticEnvelope
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import OneClassSVM
+from sklearn.neighbors import LocalOutlierFactor
+
+
+
+
+class Preprocessing:
+
+    def __init__(self,**kwargs):
+        pass
+
+    def run_outier(self,X,outlier_method,**kwargs):
+        outlier_detection_methods = {'LocalOutlierFactor':LocalOutlierFactor}
+        outlier_detector = outlier_detection_methods[outlier_method](**kwargs)
+        outlier_mask = outlier_detector.fit_predict(X)
+        return outlier_mask
 
 
 
@@ -10,9 +30,12 @@ class Encoders:
     def __init__(self, **kwargs):
         self.encoded_values = {}
         self.df = kwargs['df']
-        if 'cat_columns' in kwargs.keys():
+        if 'cat_columns' not in kwargs.keys():
             self.cat_columns = [cat_col for cat_col in self.df.columns if self.df[cat_col].dtype==object]
             self.num_columns = [col for col in self.df.columns if col not in self.cat_columns]
+        else:
+            self.cat_columns = [cat_col for cat_col in kwargs['cat_columns'] if self.df[cat_col].dtype == object]
+            self.num_columns = [col for col in self.df.columns if col not in kwargs['cat_columns']]
 
         if 'column_wise_encoding_dict' in kwargs.keys():
             self.column_wise_encoding_dict = kwargs['column_wise_encoding_dict']
