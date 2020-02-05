@@ -1,0 +1,64 @@
+MLModels:
+    LinearRegression:
+        Hyperparameters: 
+        
+    LogisticRegression:
+        Hyperparameters:
+        
+    'LogisticRegression': 
+            Hyperparameters:
+            
+    'GaussianNB': 
+            Hyperparameters:
+            
+    'MultinomialNB': 
+            Hyperparameters:
+            
+    'DecisionTreeClassifier':
+            Hyperparameters:
+            
+    'NearestNeighbors': 
+            Hyperparameters:
+            
+    'RandomForestClassifier': 
+            Hyperparameters:
+            
+    'AdaBoostClassifier': 
+            Hyperparameters:
+            
+    'GradientBoostingClassifier': 
+            Hyperparameters:
+            
+    'SGDClassifier': 
+            Hyperparameters:
+            
+    'SVC': 
+            Hyperparameters:
+            
+    'LinearRegression': 
+            Hyperparameters:
+            
+    'SVR': 
+            Hyperparameters:
+            
+    'Ridge': 
+            Hyperparameters:
+            
+    'BayesianRidge': 
+            Hyperparameters:
+            
+    'DecisionTreeRegressor': 
+            Hyperparameters:
+            
+    'RandomForestRegressor': 
+            Hyperparameters:
+            
+    'SGDRegressor': 
+            Hyperparameters:
+            
+    'XGBRegressor': 
+            Hyperparameters:
+            
+    'XGBClassifier': 
+            Hyperparameters:
+           
